@@ -86,6 +86,8 @@ sel2indices(grid::AbstractAlignedGrid, dim::AbDim, sel::Near{<:AbstractVector}) 
 # Between selector
 sel2indices(grid, dim::AbDim, sel::Between{<:Tuple}) = between(dim, sel)
 
+# Functions
+sel2indices(grid, dim::AbDim, sel::Function) = sel.(val(dim))
 
 # Transformed grid
 
@@ -178,7 +180,7 @@ _mayberev(::Reverse, (a, b)) = (b, a)
 _sorttuple((a, b)) = a < b ? (a, b) : (b, a)
 
 # Selector indexing without dim wrappers. Must be in the right order!
-Base.@propagate_inbounds Base.getindex(a::AbDimArray, I::Vararg{SelectorOrStandard}) =
+Base.@propagate_inbounds Base.getindex(a::AbDimArray, I::Vararg{Union{SelectorOrStandard, Function}}) =
     getindex(a, sel2indices(a, I)...)
 Base.@propagate_inbounds Base.setindex!(a::AbDimArray, x, I::Vararg{SelectorOrStandard}) =
     setindex!(a, x, sel2indices(a, I)...)

@@ -75,6 +75,9 @@ end
 @inline dims2indices(grid, dim::AbDim, lookup::AbDim{<:Selector}, emptyval) =
     sel2indices(grid, dim, val(lookup))
 
+@inline dims2indices(grid, dim::AbDim, lookup::AbDim{<:Function}, emptyval) =
+    sel2indices(grid, dim, val(lookup))
+
 # Selectors select on grid dimensions
 @inline irreg2indices(grids::Tuple, dims::Tuple, lookup::Tuple{AbDim{<:Selector},Vararg}, emptyval) =
     sel2indices(grids, dims, map(val, lookup))
